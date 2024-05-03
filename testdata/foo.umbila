@@ -1,0 +1,12 @@
+# This is a very good spec
+# This is another spec
+# This is a last spec
+interface Foo {
+	create_foo(name: string, age: string)
+}
+
+struct Foo {
+	name: string
+	age: string
+	height: string
+}
