@@ -2,43 +2,22 @@ package main
 
 import (
 	"fmt"
-	"log"
 )
 
-type interfaceDef struct {
+type InterfaceDef struct {
 	Token
 	Name *Identifier
-	Ops  []*opDef
+	Ops  []*OperationDef
 }
 
-func (i *interfaceDef) String() string {
-	f := `Interface{
-    Token => %v
-    Ident => %v
-    Ops   => %v
-  }`
+func (i *InterfaceDef) node() {}
 
-	return fmt.Sprintf(f, i.Token, i.Name, i.Ops)
-}
+func (i *InterfaceDef) def() {}
 
-func (i *interfaceDef) node() {}
-
-func (i *interfaceDef) def() {}
-
-func (i *opDef) String() string {
-	f := `Operation{
-    Name   => %v
-    Args   => %v
-  }`
-
-	return fmt.Sprintf(f, i.Value, i.Args)
-}
-
-func (p *Parser) parseInterface() (*interfaceDef, error) {
-	log.Println("Parsing interface")
-	interfaceDef := interfaceDef{
+func (p *Parser) parseInterface() (*InterfaceDef, error) {
+	interfaceDef := InterfaceDef{
 		Token: p.curToken,
-		Ops:   []*opDef{},
+		Ops:   []*OperationDef{},
 	}
 
 	if p.peekToken.Type != Ident {
@@ -53,11 +32,8 @@ func (p *Parser) parseInterface() (*interfaceDef, error) {
 	}
 	p.NextToken()
 
-	// parse operations
 	for p.peekToken.Type != RBrace {
-		log.Println("Iterate ops")
 		p.NextToken()
-		// parse operation
 		opDef, err := p.parseOpDef()
 		if err != nil {
 			return nil, err

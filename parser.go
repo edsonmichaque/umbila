@@ -2,21 +2,19 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"time"
 )
 
 type Node interface {
 	node()
 }
 
-type Def interface {
+type Definition interface {
 	Node
 	def()
 }
 
 type Spec struct {
-	Defs []Def
+	Defs []Definition
 }
 
 type Identifier struct {
@@ -42,7 +40,7 @@ type Parser struct {
 }
 
 func (p *Parser) parse() (*Spec, error) {
-	defs := []Def{}
+	defs := []Definition{}
 
 	for {
 		def, err := p.parseDef()
@@ -71,18 +69,14 @@ func (p *Parser) PeekToken() Token {
 	return Token{}
 }
 
-func (p *Parser) parseDef() (Def, error) {
+func (p *Parser) parseDef() (Definition, error) {
 	for p.peekToken.Type != EOF {
-		log.Printf("CUR TOKEN: %v", p.curToken)
-		time.Sleep(500 * time.Millisecond)
-
 		switch p.curToken.Type {
 		case Interface:
 			return p.parseInterface()
 		case Struct:
 			return p.parseStruct()
 		case Comment:
-			log.Println("Found a comment")
 			p.NextToken()
 		}
 	}

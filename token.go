@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 type TokenType int
 
 const (
@@ -67,23 +65,17 @@ type Token struct {
 	end     Position
 }
 
-func (t Token) String() string {
-	f := `Token{Type => %s, Literal => %s}`
-
-	return fmt.Sprintf(f, t.Type, t.Literal)
-}
-
 var keywords = map[string]TokenType{
 	"interface": Interface,
 	"struct":    Struct,
 	"enum":      Enum,
 }
 
-func checkKeyword(ident string) TokenType {
-	tt, ok := keywords[ident]
+func lookupKeyword(ident string) TokenType {
+	tokenType, ok := keywords[ident]
 	if !ok {
 		return Ident
 	}
 
-	return tt
+	return tokenType
 }
