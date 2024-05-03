@@ -6,7 +6,7 @@ type Node interface {
 
 type Definition interface {
 	Node
-	def()
+	definition()
 }
 
 type AST struct {

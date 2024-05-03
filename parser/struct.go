@@ -12,7 +12,7 @@ type StructDefinition struct {
 
 func (s *StructDefinition) node() {}
 
-func (s *StructDefinition) def() {}
+func (s *StructDefinition) definition() {}
 
 func (p *Parser) parseStruct() (*StructDefinition, error) {
 	if p.peekToken.Type != Ident {

@@ -74,4 +74,4 @@ type End struct{}
 
 func (e *End) node() {}
 
-func (e *End) def() {}
+func (e *End) definition() {}

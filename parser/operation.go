@@ -4,19 +4,19 @@ import (
 	"fmt"
 )
 
-type OperationDef struct {
+type OperationDefinition struct {
 	Token
 	Value  string
 	Params []*ParamDefinition
 	Return *Token
 }
 
-func (o *OperationDef) node() {}
+func (o *OperationDefinition) node() {}
 
-func (o *OperationDef) def() {}
+func (o *OperationDefinition) definition() {}
 
-func (p *Parser) parseOpDef() (*OperationDef, error) {
-	operationDef := &OperationDef{
+func (p *Parser) parseOpDef() (*OperationDefinition, error) {
+	operationDef := &OperationDefinition{
 		Token:  p.curToken,
 		Value:  p.curToken.Literal,
 		Params: []*ParamDefinition{},

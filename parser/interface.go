@@ -4,20 +4,20 @@ import (
 	"fmt"
 )
 
-type InterfaceDef struct {
+type InterfaceDefinition struct {
 	Token
 	Name *Identifier
-	Ops  []*OperationDef
+	Ops  []*OperationDefinition
 }
 
-func (i *InterfaceDef) node() {}
+func (i *InterfaceDefinition) node() {}
 
-func (i *InterfaceDef) def() {}
+func (i *InterfaceDefinition) definition() {}
 
-func (p *Parser) parseInterface() (*InterfaceDef, error) {
-	interfaceDef := InterfaceDef{
+func (p *Parser) parseInterface() (*InterfaceDefinition, error) {
+	interfaceDef := InterfaceDefinition{
 		Token: p.curToken,
-		Ops:   []*OperationDef{},
+		Ops:   []*OperationDefinition{},
 	}
 
 	if p.peekToken.Type != Ident {
