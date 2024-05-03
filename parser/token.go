@@ -1,4 +1,6 @@
-package main
+package parser
+
+import "fmt"
 
 type TokenType int
 
@@ -56,6 +58,10 @@ func (t TokenType) String() string {
 	}
 
 	return types[t]
+}
+
+func (t TokenType) MarshalJSON() ([]byte, error) {
+	return []byte(fmt.Sprintf(`"%v"`, t.String())), nil
 }
 
 type Token struct {

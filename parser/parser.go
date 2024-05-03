@@ -1,10 +1,10 @@
-package main
+package parser
 
 import (
 	"fmt"
 )
 
-func newParser(l *Lexer) *Parser {
+func New(l *Lexer) *Parser {
 	parser := &Parser{
 		lexer: l,
 	}

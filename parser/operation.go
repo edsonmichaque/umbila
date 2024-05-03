@@ -1,4 +1,4 @@
-package main
+package parser
 
 import (
 	"fmt"
@@ -7,8 +7,8 @@ import (
 type OperationDef struct {
 	Token
 	Value  string
-	Args   []*ParamDefinition
-	Return *ParamDefinition
+	Params []*ParamDefinition
+	Return *Token
 }
 
 func (o *OperationDef) node() {}
@@ -17,9 +17,9 @@ func (o *OperationDef) def() {}
 
 func (p *Parser) parseOpDef() (*OperationDef, error) {
 	operationDef := &OperationDef{
-		Token: p.curToken,
-		Value: p.curToken.Literal,
-		Args:  []*ParamDefinition{},
+		Token:  p.curToken,
+		Value:  p.curToken.Literal,
+		Params: []*ParamDefinition{},
 	}
 
 	if p.peekToken.Type != LParen {
@@ -50,13 +50,24 @@ func (p *Parser) parseOpDef() (*OperationDef, error) {
 		p.NextToken()
 
 		argDef.Type = &Identifier{Token: p.curToken, Value: p.curToken.Literal}
-		operationDef.Args = append(operationDef.Args, &argDef)
+		operationDef.Params = append(operationDef.Params, &argDef)
 
 		if p.peekToken.Type == Comma {
 			p.NextToken()
 		}
 	}
 	p.NextToken()
+
+	if p.peekToken.Type == Collon {
+		p.NextToken()
+
+		if p.peekToken.Type != Ident {
+			return nil, fmt.Errorf("6: expected <ident> but found: %v", p.peekToken.Literal)
+		}
+		p.NextToken()
+
+		operationDef.Return = &p.curToken
+	}
 
 	return operationDef, nil
 }

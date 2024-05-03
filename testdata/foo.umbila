@@ -2,7 +2,9 @@
 # This is another spec
 # This is a last spec
 interface Foo {
-	create_foo(name: string, age: string)
+	create_foo(name: string, age: string): Foo
+	create_bar(name: string, age: string): Bar
+	delete_foo(id: int)
 }
 
 struct Foo {

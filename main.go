@@ -1,10 +1,11 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 
-	"github.com/davecgh/go-spew/spew"
+	"github.com/edsonmichaque/umbila/parser"
 )
 
 func main() {
@@ -16,16 +17,21 @@ func main() {
 
 	fmt.Println("Source:", input)
 
-	lexer := newLexer(os.Args[1])
+	lexer := parser.NewLexer(os.Args[1])
 
-	parser := newParser(lexer)
+	parser := parser.New(lexer)
 
 	spec, err := parser.Parse()
 	if err != nil {
 		panic(err)
 	}
 
-	spew.Printf("Spec: %v\n", spec)
+	data, err := json.MarshalIndent(spec, "", "  ")
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(string(data))
 }
 
 // AST

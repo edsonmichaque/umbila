@@ -1,40 +1,40 @@
-package main
+package parser
 
 type Position struct {
-	offset int
-	line   int
-	column int
+	Offset int
+	Line   int
+	Column int
 }
 
 type Lexer struct {
-	src      string
-	ch       byte
-	offset   int
+	Src      string
+	Ch       byte
+	Offset   int
 	position Position
 }
 
-func newLexer(input string) *Lexer {
+func NewLexer(input string) *Lexer {
 	return &Lexer{
-		src: input,
+		Src: input,
 	}
 }
 
 func (l *Lexer) peek() byte {
-	if l.offset < len(l.src) {
-		return l.src[l.offset]
+	if l.Offset < len(l.Src) {
+		return l.Src[l.Offset]
 	}
 
 	return 0
 }
 
 func (l *Lexer) scan() {
-	if l.offset >= len(l.src) {
-		l.ch = 0
+	if l.Offset >= len(l.Src) {
+		l.Ch = 0
 		return
 	}
 
-	l.ch = l.src[l.offset]
-	l.offset++
+	l.Ch = l.Src[l.Offset]
+	l.Offset++
 }
 
 func (l *Lexer) readToken() Token {
@@ -42,7 +42,7 @@ func (l *Lexer) readToken() Token {
 
 	l.ignoreSpace()
 
-	switch l.ch {
+	switch l.Ch {
 	case '=':
 		ch := l.peek()
 		switch ch {
@@ -100,36 +100,36 @@ func (l *Lexer) readToken() Token {
 	case 0:
 		return Token{Type: EOF}
 	default:
-		if isLetter(l.ch) {
+		if isLetter(l.Ch) {
 			lit := l.readIdent()
 			return Token{Type: lookupKeyword(lit), Literal: lit}
 		}
 
-		if isDigit(l.ch) {
+		if isDigit(l.Ch) {
 			lit := l.readNumber()
 			return Token{Type: Number, Literal: lit}
 		}
 
-		return Token{Type: Illegal, Literal: string(l.ch)}
+		return Token{Type: Illegal, Literal: string(l.Ch)}
 	}
 }
 
 func (l *Lexer) readString() string {
-	start := l.offset - 1
+	start := l.Offset - 1
 
 	for {
 		l.scan()
 
-		if l.ch == '"' || l.ch == 0 {
+		if l.Ch == '"' || l.Ch == 0 {
 			break
 		}
 	}
 
-	return l.src[start:l.offset]
+	return l.Src[start:l.Offset]
 }
 
 func (l *Lexer) readComment() string {
-	start := l.offset - 1
+	start := l.Offset - 1
 
 	for {
 		ch := l.peek()
@@ -141,17 +141,17 @@ func (l *Lexer) readComment() string {
 		l.scan()
 	}
 
-	return l.src[start:l.offset]
+	return l.Src[start:l.Offset]
 }
 
 func (l *Lexer) ignoreSpace() {
-	for l.ch == ' ' || l.ch == '\t' || l.ch == '\r' || l.ch == '\n' {
+	for l.Ch == ' ' || l.Ch == '\t' || l.Ch == '\r' || l.Ch == '\n' {
 		l.scan()
 	}
 }
 
 func (l *Lexer) readNumber() string {
-	start := l.offset - 1
+	start := l.Offset - 1
 
 	for {
 		ch := l.peek()
@@ -163,11 +163,11 @@ func (l *Lexer) readNumber() string {
 		l.scan()
 	}
 
-	return l.src[start:l.offset]
+	return l.Src[start:l.Offset]
 }
 
 func (l *Lexer) readIdent() string {
-	start := l.offset - 1
+	start := l.Offset - 1
 
 	for {
 		ch := l.peek()
@@ -179,7 +179,7 @@ func (l *Lexer) readIdent() string {
 		l.scan()
 	}
 
-	return l.src[start:l.offset]
+	return l.Src[start:l.Offset]
 }
 
 func isLetter(b byte) bool {
