@@ -7,8 +7,8 @@ import (
 type OperationDef struct {
 	Token
 	Value  string
-	Args   []*argDef
-	Return *argDef
+	Args   []*ParamDefinition
+	Return *ParamDefinition
 }
 
 func (o *OperationDef) node() {}
@@ -19,7 +19,7 @@ func (p *Parser) parseOpDef() (*OperationDef, error) {
 	operationDef := &OperationDef{
 		Token: p.curToken,
 		Value: p.curToken.Literal,
-		Args:  []*argDef{},
+		Args:  []*ParamDefinition{},
 	}
 
 	if p.peekToken.Type != LParen {
@@ -34,7 +34,7 @@ func (p *Parser) parseOpDef() (*OperationDef, error) {
 			return nil, fmt.Errorf("2: expected <ident> but found %v", p.curToken)
 		}
 
-		argDef := argDef{
+		argDef := ParamDefinition{
 			Token: p.curToken,
 			Var:   &Identifier{Token: p.curToken, Value: p.curToken.Literal},
 		}

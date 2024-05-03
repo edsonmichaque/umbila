@@ -4,25 +4,25 @@ import (
 	"fmt"
 )
 
-type StructDef struct {
+type StructDefinition struct {
 	Token
 	Name   *Identifier
-	Params []*ParamDef
+	Params []*ParamDefinition
 }
 
-func (s *StructDef) node() {}
+func (s *StructDefinition) node() {}
 
-func (s *StructDef) def() {}
+func (s *StructDefinition) def() {}
 
-func (p *Parser) parseStruct() (*StructDef, error) {
+func (p *Parser) parseStruct() (*StructDefinition, error) {
 	if p.peekToken.Type != Ident {
 		return nil, fmt.Errorf("expected <ident> found: %v", p.peekToken.Literal)
 	}
 	p.NextToken()
 
-	def := StructDef{
+	structDefinition := StructDefinition{
 		Token:  p.curToken,
-		Params: make([]*ParamDef, 0),
+		Params: make([]*ParamDefinition, 0),
 	}
 
 	if p.peekToken.Type != LBrace {
@@ -31,7 +31,7 @@ func (p *Parser) parseStruct() (*StructDef, error) {
 	p.NextToken()
 
 	for p.peekToken.Type != RBrace {
-		argDef := &ParamDef{
+		paramDefinition := &ParamDefinition{
 			Token: p.curToken,
 		}
 
@@ -40,7 +40,7 @@ func (p *Parser) parseStruct() (*StructDef, error) {
 		}
 		p.NextToken()
 
-		argDef.Var = &Identifier{Token: p.curToken, Value: p.curToken.Literal}
+		paramDefinition.Var = &Identifier{Token: p.curToken, Value: p.curToken.Literal}
 
 		if p.peekToken.Type != Collon {
 			return nil, fmt.Errorf("expected <:> but found %v", p.peekToken.Literal)
@@ -52,12 +52,12 @@ func (p *Parser) parseStruct() (*StructDef, error) {
 		}
 		p.NextToken()
 
-		argDef.Type = &Identifier{Token: p.curToken, Value: p.curToken.Literal}
+		paramDefinition.Type = &Identifier{Token: p.curToken, Value: p.curToken.Literal}
 
-		def.Params = append(def.Params, argDef)
+		structDefinition.Params = append(structDefinition.Params, paramDefinition)
 	}
 	p.NextToken()
 	p.NextToken()
 
-	return &def, nil
+	return &structDefinition, nil
 }

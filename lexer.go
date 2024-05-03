@@ -102,7 +102,7 @@ func (l *Lexer) readToken() Token {
 	default:
 		if isLetter(l.ch) {
 			lit := l.readIdent()
-			return Token{Type: checkKeyword(lit), Literal: lit}
+			return Token{Type: lookupKeyword(lit), Literal: lit}
 		}
 
 		if isDigit(l.ch) {
