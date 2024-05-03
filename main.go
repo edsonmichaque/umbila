@@ -20,7 +20,7 @@ func main() {
 
 	parser := newParser(lexer)
 
-	spec, err := parser.parse()
+	spec, err := parser.Parse()
 	if err != nil {
 		panic(err)
 	}

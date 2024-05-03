@@ -4,33 +4,15 @@ import (
 	"fmt"
 )
 
-type Node interface {
-	node()
-}
-
-type Definition interface {
-	Node
-	def()
-}
-
-type Spec struct {
-	Defs []Definition
-}
-
-type Identifier struct {
-	Token
-	Value string
-}
-
 func newParser(l *Lexer) *Parser {
-	p := &Parser{
+	parser := &Parser{
 		lexer: l,
 	}
 
-	p.NextToken()
-	p.NextToken()
+	parser.NextToken()
+	parser.NextToken()
 
-	return p
+	return parser
 }
 
 type Parser struct {
@@ -39,24 +21,24 @@ type Parser struct {
 	lexer     *Lexer
 }
 
-func (p *Parser) parse() (*Spec, error) {
-	defs := []Definition{}
+func (p *Parser) Parse() (*AST, error) {
+	definitions := []Definition{}
 
 	for {
-		def, err := p.parseDef()
+		definition, err := p.parseDef()
 		if err != nil {
 			return nil, err
 		}
 
-		if _, ok := def.(*End); ok {
+		if _, ok := definition.(*End); ok {
 			break
 		}
 
-		defs = append(defs, def)
+		definitions = append(definitions, definition)
 	}
 
-	return &Spec{
-		Defs: defs,
+	return &AST{
+		Definitions: definitions,
 	}, nil
 }
 
