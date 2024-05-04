@@ -1,14 +1,19 @@
 # This is a very good spec
 # This is another spec
 # This is a last spec
+@path("/v1/foos")
 interface Foo {
-	create_foo(name: string, age: string): Foo
-	create_bar(name: string, age: string): Bar
-	delete_foo(id: int)
+  @summary("This is a summary")
+  create_foo(name1: string, age: string): Foo
 }
 
 struct Foo {
-	name: string
 	age: string
 	height: string
+  gender: Gender
+}
+
+enum Gender {
+  Male
+  Female
 }

@@ -48,7 +48,7 @@ func (p *Parser) NextToken() {
 }
 
 func (p *Parser) PeekToken() Token {
-	return Token{}
+	return p.peekToken
 }
 
 func (p *Parser) parseDef() (Definition, error) {
@@ -58,6 +58,10 @@ func (p *Parser) parseDef() (Definition, error) {
 			return p.parseInterface()
 		case Struct:
 			return p.parseStruct()
+		case Enum:
+			return p.parseEnumDefinition()
+		case At:
+			return p.parseAnnotationDefinition()
 		case Comment:
 			p.NextToken()
 		}

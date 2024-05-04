@@ -14,12 +14,12 @@ const (
 	LBrace
 	RBrace
 	Number
-	Eq
+	Equal
 	Assign
 	Neq
-	GThan
-	LThan
-	LTEq
+	GreaterThan
+	LessThan
+	NotEqual
 	GTEq
 	Comment
 	Collon
@@ -28,33 +28,35 @@ const (
 	String
 	Comma
 	Enum
+	Union
 )
 
 func (t TokenType) String() string {
 	types := map[TokenType]string{
-		Illegal:   "ILLEGAL",
-		LParen:    "L_PAREN",
-		Ident:     "IDENT",
-		RParen:    "R_PAREN",
-		EOF:       "EOF",
-		At:        "AT",
-		LBrace:    "L_BRACE",
-		RBrace:    "R_BRACE",
-		Number:    "Number",
-		Eq:        "EQ",
-		Assign:    "ASSIGN",
-		Neq:       "NEQ",
-		GThan:     "GT",
-		LThan:     "LT",
-		LTEq:      "LTE",
-		GTEq:      "GTE",
-		Comment:   "COMMENT",
-		Collon:    "COLLON",
-		Interface: "INTERFACE",
-		Struct:    "STRUCT",
-		String:    "STRING",
-		Comma:     "COMMA",
-		Enum:      "ENUM",
+		Illegal:     "ILLEGAL",
+		LParen:      "L_PAREN",
+		Ident:       "IDENT",
+		RParen:      "R_PAREN",
+		EOF:         "EOF",
+		At:          "AT",
+		LBrace:      "L_BRACE",
+		RBrace:      "R_BRACE",
+		Number:      "Number",
+		Equal:       "EQ",
+		Assign:      "ASSIGN",
+		Neq:         "NEQ",
+		GreaterThan: "GT",
+		LessThan:    "LT",
+		NotEqual:    "NOT_EQUAL",
+		GTEq:        "GTE",
+		Comment:     "COMMENT",
+		Collon:      "COLLON",
+		Interface:   "INTERFACE",
+		Struct:      "STRUCT",
+		String:      "STRING",
+		Comma:       "COMMA",
+		Enum:        "ENUM",
+		Union:       "UNION",
 	}
 
 	return types[t]
@@ -75,6 +77,7 @@ var keywords = map[string]TokenType{
 	"interface": Interface,
 	"struct":    Struct,
 	"enum":      Enum,
+	"union":     Union,
 }
 
 func lookupKeyword(ident string) TokenType {

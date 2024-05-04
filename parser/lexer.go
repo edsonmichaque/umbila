@@ -48,7 +48,7 @@ func (l *Lexer) readToken() Token {
 		switch ch {
 		case '=':
 			l.scan()
-			return Token{Type: Eq, Literal: "=="}
+			return Token{Type: Equal, Literal: "=="}
 		default:
 			return Token{Type: Assign, Literal: "="}
 		}
@@ -68,7 +68,7 @@ func (l *Lexer) readToken() Token {
 	case '!':
 		if ch := l.peek(); ch == '=' {
 			l.scan()
-			return Token{Type: LTEq, Literal: "!="}
+			return Token{Type: NotEqual, Literal: "!="}
 		}
 
 		return Token{Type: Illegal}
@@ -78,14 +78,14 @@ func (l *Lexer) readToken() Token {
 			return Token{Type: GTEq, Literal: "!="}
 		}
 
-		return Token{Type: GThan, Literal: ">"}
+		return Token{Type: GreaterThan, Literal: ">"}
 	case '<':
 		if ch := l.peek(); ch == '=' {
 			l.scan()
 			return Token{Type: Neq, Literal: "!="}
 		}
 
-		return Token{Type: LThan, Literal: "<"}
+		return Token{Type: LessThan, Literal: "<"}
 	case '(':
 		return Token{Type: LParen, Literal: "("}
 	case ')':

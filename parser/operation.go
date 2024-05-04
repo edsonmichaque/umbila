@@ -6,16 +6,17 @@ import (
 
 type OperationDefinition struct {
 	Token
-	Value  string
-	Params []*ParamDefinition
-	Return *Token
+	Value      string
+	Params     []*ParamDefinition
+	Return     *Token
+	Annotation *AnnotationDefinition
 }
 
 func (o *OperationDefinition) node() {}
 
 func (o *OperationDefinition) definition() {}
 
-func (p *Parser) parseOpDef() (*OperationDefinition, error) {
+func (p *Parser) parseOperationDefinition() (*OperationDefinition, error) {
 	operationDef := &OperationDefinition{
 		Token:  p.curToken,
 		Value:  p.curToken.Literal,
