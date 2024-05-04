@@ -1,8 +1,33 @@
 @annotation("this is an annotation")
-@annotation(7)
+@annotation(7) 
+@annotation 
+@annotation
 interface Foo {
   bar(id: int)
   baz(id: int)
   foo(id1: int, id2: int, id3: int): Foo
   acme(id: string): Bar
 }
+
+@annotation("this is an annotation")
+@annotation(7) 
+@annotation(false) 
+@annotation
+interface Foo {
+  bar(id: int)
+  baz(id: int)
+  foo(id1: int, id2: int, id3: int): Foo
+  acme(id: string): Bar
+}
+
+@http(method="GET",path="/v1/")
+@http(query="id")
+interface Foo {
+  bar(id: int)
+  baz(id: int)
+  foo(id1: int, id2: int, id3: int): Foo
+  acme(id: string): Bar
+  acme(id: string)
+}
+
+
