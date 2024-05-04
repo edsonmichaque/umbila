@@ -5,20 +5,14 @@ import (
 	"log"
 )
 
-type Tokenizer interface {
-	NextToken()
-	PeekToken() Token
-	CurrentToken() Token
-}
-
 type AnnotationDef struct {
 	Token
 	Name  Identifier
 	Value AnnotationValue
 }
 
-func (a AnnotationDef) node()       {}
-func (a AnnotationDef) definition() {}
+func (a *AnnotationDef) node()       {}
+func (a *AnnotationDef) definition() {}
 
 type AnnotationValue struct {
 	String *string
@@ -56,6 +50,10 @@ func parseAnnotation(tok Tokenizer) (*AnnotationDef, error) {
 			tok.NextToken()
 
 			ann.Value.Number = StringPtr(tok.CurrentToken().Literal)
+		case Bool:
+			tok.NextToken()
+
+			ann.Value.Bool = StringPtr(tok.CurrentToken().Literal)
 		default:
 			return nil, fmt.Errorf("expected (<ident>|<number>|<string>) but found: %v", tok.PeekToken())
 		}

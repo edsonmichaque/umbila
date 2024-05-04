@@ -29,6 +29,7 @@ const (
 	TypeComma
 	Enum
 	Union
+	Bool
 )
 
 func (t TokenType) String() string {
@@ -57,6 +58,7 @@ func (t TokenType) String() string {
 		TypeComma:     "COMMA",
 		Enum:          "ENUM",
 		Union:         "UNION",
+		Bool:          "BOOL",
 	}
 
 	return types[t]
@@ -78,6 +80,8 @@ var keywords = map[string]TokenType{
 	"struct":    Struct,
 	"enum":      Enum,
 	"union":     Union,
+	"false":     Bool,
+	"true":      Bool,
 }
 
 func lookupKeyword(ident string) TokenType {
