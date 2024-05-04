@@ -11,14 +11,14 @@ type Tokenizer interface {
 	CurrentToken() Token
 }
 
-type annotationDefinition struct {
+type AnnotationDef struct {
 	Token
 	Name  Identifier
 	Value AnnotationValue
 }
 
-func (a annotationDefinition) node()       {}
-func (a annotationDefinition) definition() {}
+func (a AnnotationDef) node()       {}
+func (a AnnotationDef) definition() {}
 
 type AnnotationValue struct {
 	String *string
@@ -30,8 +30,8 @@ func ParseAnnotation(p Tokenizer) (Def, error) {
 	return parseAnnotation(p)
 }
 
-func parseAnnotation(tok Tokenizer) (*annotationDefinition, error) {
-	ann := &annotationDefinition{
+func parseAnnotation(tok Tokenizer) (*AnnotationDef, error) {
+	ann := &AnnotationDef{
 		Token: tok.CurrentToken(),
 	}
 
