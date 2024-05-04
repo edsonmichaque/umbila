@@ -22,23 +22,23 @@ type Parser struct {
 }
 
 func (p *Parser) Parse() (*AST, error) {
-	definitions := []Definition{}
+	defs := []Def{}
 
 	for {
-		definition, err := p.parseDef()
+		def, err := p.parseDefinition()
 		if err != nil {
 			return nil, err
 		}
 
-		if _, ok := definition.(*End); ok {
+		if _, ok := def.(*End); ok {
 			break
 		}
 
-		definitions = append(definitions, definition)
+		defs = append(defs, def)
 	}
 
 	return &AST{
-		Definitions: definitions,
+		Defs: defs,
 	}, nil
 }
 
@@ -51,27 +51,28 @@ func (p *Parser) PeekToken() Token {
 	return p.peekToken
 }
 
-func (p *Parser) parseDef() (Definition, error) {
-	for p.peekToken.Type != EOF {
-		switch p.curToken.Type {
-		case Interface:
-			return p.parseInterface()
-		case Struct:
-			return p.parseStruct()
-		case Enum:
-			return p.parseEnumDefinition()
-		case At:
-			return p.parseAnnotationDefinition()
-		case Comment:
-			p.NextToken()
-		}
-	}
+func (p *Parser) CurrentToken() Token {
+	return p.curToken
+}
 
-	if p.curToken.Type == EOF {
+type ParserFunc func(Tokenizer) (Def, error)
+
+func (p *Parser) parseDefinition() (Def, error) {
+	if p.peekToken.Type == EOF {
 		return &End{}, nil
 	}
 
-	return nil, fmt.Errorf("7: Invalid %v", p.curToken)
+	parsers := map[TokenType]ParserFunc{
+		TypeInterface: ParseInterface,
+		TypeAt:        ParseAnnotation,
+	}
+
+	parseFunc, ok := parsers[p.CurrentToken().Type]
+	if !ok {
+		return nil, fmt.Errorf("kaboom")
+	}
+
+	return parseFunc(p)
 }
 
 type End struct{}

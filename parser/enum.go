@@ -16,7 +16,7 @@ func (p *Parser) parseEnumDefinition() (*EnumDefinition, error) {
 	enumDef := &EnumDefinition{
 		Token: p.curToken,
 	}
-	if p.peekToken.Type != Ident {
+	if p.peekToken.Type != TypeIdent {
 		return nil, fmt.Errorf("expected <ident> but found: %v", p.peekToken.Literal)
 	}
 	p.NextToken()
@@ -31,7 +31,7 @@ func (p *Parser) parseEnumDefinition() (*EnumDefinition, error) {
 	for p.peekToken.Type != RBrace {
 		p.NextToken()
 
-		if p.curToken.Type != Ident {
+		if p.curToken.Type != TypeIdent {
 			return nil, fmt.Errorf("expected <ident> but found: %v", p.peekToken.Literal)
 		}
 

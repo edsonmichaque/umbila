@@ -1,74 +1,19 @@
 package parser
 
-import (
-	"fmt"
-)
-
-type OperationDefinition struct {
+type OperationDef struct {
 	Token
 	Value      string
-	Params     []*ParamDefinition
-	Return     *Token
+	Name       *Identifier
+	Params     []*ParamDef
+	Return     *ReturnType
 	Annotation *AnnotationDefinition
 }
 
-func (o *OperationDefinition) node() {}
-
-func (o *OperationDefinition) definition() {}
-
-func (p *Parser) parseOperationDefinition() (*OperationDefinition, error) {
-	operationDef := &OperationDefinition{
-		Token:  p.curToken,
-		Value:  p.curToken.Literal,
-		Params: []*ParamDefinition{},
-	}
-
-	if p.peekToken.Type != LParen {
-		return nil, fmt.Errorf("1: expected ( but found %v", p.peekToken.Literal)
-	}
-	p.NextToken()
-
-	for p.peekToken.Type != RParen {
-		p.NextToken()
-
-		if p.curToken.Type != Ident {
-			return nil, fmt.Errorf("2: expected <ident> but found %v", p.curToken)
-		}
-
-		argDef := ParamDefinition{
-			Token: p.curToken,
-			Var:   &Identifier{Token: p.curToken, Value: p.curToken.Literal},
-		}
-
-		if p.peekToken.Type != Collon {
-			return nil, fmt.Errorf("3: expected : but found %v", p.peekToken.Literal)
-		}
-		p.NextToken()
-
-		if p.peekToken.Type != Ident {
-			return nil, fmt.Errorf("4: expected ident but found %v", p.peekToken.Literal)
-		}
-		p.NextToken()
-
-		argDef.Type = &Identifier{Token: p.curToken, Value: p.curToken.Literal}
-		operationDef.Params = append(operationDef.Params, &argDef)
-
-		if p.peekToken.Type == Comma {
-			p.NextToken()
-		}
-	}
-	p.NextToken()
-
-	if p.peekToken.Type == Collon {
-		p.NextToken()
-
-		if p.peekToken.Type != Ident {
-			return nil, fmt.Errorf("6: expected <ident> but found: %v", p.peekToken.Literal)
-		}
-		p.NextToken()
-
-		operationDef.Return = &p.curToken
-	}
-
-	return operationDef, nil
+type ReturnType struct {
+	Token
+	Value string
 }
+
+func (o *OperationDef) node() {}
+
+func (o *OperationDef) definition() {}

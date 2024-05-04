@@ -1,0 +1,6 @@
+interface Foo {
+  bar(id: int)
+  baz(id: int)
+  foo(id1: int, id2: int, id3: int): Foo
+  acme(id: string): Bar
+}

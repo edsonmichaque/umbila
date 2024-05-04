@@ -7,10 +7,10 @@ type TokenType int
 const (
 	Illegal TokenType = iota
 	LParen
-	Ident
-	RParen
+	TypeIdent
+	TypeRParen
 	EOF
-	At
+	TypeAt
 	LBrace
 	RBrace
 	Number
@@ -22,41 +22,41 @@ const (
 	NotEqual
 	GTEq
 	Comment
-	Collon
-	Interface
+	TypeCollon
+	TypeInterface
 	Struct
 	String
-	Comma
+	TypeComma
 	Enum
 	Union
 )
 
 func (t TokenType) String() string {
 	types := map[TokenType]string{
-		Illegal:     "ILLEGAL",
-		LParen:      "L_PAREN",
-		Ident:       "IDENT",
-		RParen:      "R_PAREN",
-		EOF:         "EOF",
-		At:          "AT",
-		LBrace:      "L_BRACE",
-		RBrace:      "R_BRACE",
-		Number:      "Number",
-		Equal:       "EQ",
-		Assign:      "ASSIGN",
-		Neq:         "NEQ",
-		GreaterThan: "GT",
-		LessThan:    "LT",
-		NotEqual:    "NOT_EQUAL",
-		GTEq:        "GTE",
-		Comment:     "COMMENT",
-		Collon:      "COLLON",
-		Interface:   "INTERFACE",
-		Struct:      "STRUCT",
-		String:      "STRING",
-		Comma:       "COMMA",
-		Enum:        "ENUM",
-		Union:       "UNION",
+		Illegal:       "ILLEGAL",
+		LParen:        "L_PAREN",
+		TypeIdent:     "IDENT",
+		TypeRParen:    "R_PAREN",
+		EOF:           "EOF",
+		TypeAt:        "AT",
+		LBrace:        "L_BRACE",
+		RBrace:        "R_BRACE",
+		Number:        "Number",
+		Equal:         "EQ",
+		Assign:        "ASSIGN",
+		Neq:           "NEQ",
+		GreaterThan:   "GT",
+		LessThan:      "LT",
+		NotEqual:      "NOT_EQUAL",
+		GTEq:          "GTE",
+		Comment:       "COMMENT",
+		TypeCollon:    "COLLON",
+		TypeInterface: "INTERFACE",
+		Struct:        "STRUCT",
+		String:        "STRING",
+		TypeComma:     "COMMA",
+		Enum:          "ENUM",
+		Union:         "UNION",
 	}
 
 	return types[t]
@@ -74,7 +74,7 @@ type Token struct {
 }
 
 var keywords = map[string]TokenType{
-	"interface": Interface,
+	"interface": TypeInterface,
 	"struct":    Struct,
 	"enum":      Enum,
 	"union":     Union,
@@ -83,7 +83,7 @@ var keywords = map[string]TokenType{
 func lookupKeyword(ident string) TokenType {
 	tokenType, ok := keywords[ident]
 	if !ok {
-		return Ident
+		return TypeIdent
 	}
 
 	return tokenType

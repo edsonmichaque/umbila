@@ -20,7 +20,7 @@ func (p *Parser) parseAnnotationDefinition() (*AnnotationDefinition, error) {
 		Token: p.curToken,
 	}
 
-	if p.peekToken.Type != Ident {
+	if p.peekToken.Type != TypeIdent {
 		return nil, fmt.Errorf(
 			"expected <ident> but found %v: %v",
 			p.curToken.Type,
@@ -48,7 +48,7 @@ func (p *Parser) parseAnnotationDefinition() (*AnnotationDefinition, error) {
 
 		def.StringValue = p.curToken.Literal
 
-		if p.peekToken.Type != RParen {
+		if p.peekToken.Type != TypeRParen {
 			return nil, fmt.Errorf("expected <rparen> but found %v", p.peekToken.Literal)
 		}
 		p.NextToken()

@@ -23,18 +23,16 @@ type AnnotationValue struct {
 	Bool   string
 }
 
-type annotationParserFunc func(*Tokenizer) (Definition, error)
-
-func (a annotationParserFunc) Parse(t *Tokenizer) (Definition, error) {
-	return a(t)
+func ParseAnnotation(p Tokenizer) (Def, error) {
+	return parseAnnotation(p)
 }
 
-func ParseAnnotation(p Tokenizer) (Definition, error) {
+func parseAnnotation(p Tokenizer) (*annotationDefinition, error) {
 	ann := &annotationDefinition{
 		Token: p.CurrentToken(),
 	}
 
-	if p.CurrentToken().Type != Ident {
+	if p.CurrentToken().Type != TypeIdent {
 		return nil, fmt.Errorf("expected <ident> but found: %v", p.CurrentToken())
 	}
 	p.NextToken()

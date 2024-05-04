@@ -4,13 +4,13 @@ type Node interface {
 	node()
 }
 
-type Definition interface {
+type Def interface {
 	Node
 	definition()
 }
 
 type AST struct {
-	Definitions []Definition
+	Defs []Def
 }
 
 type Identifier struct {

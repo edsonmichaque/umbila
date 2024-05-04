@@ -60,11 +60,11 @@ func (l *Lexer) readToken() Token {
 			Literal: lit,
 		}
 	case '@':
-		return Token{Type: At, Literal: "@"}
+		return Token{Type: TypeAt, Literal: "@"}
 	case ',':
-		return Token{Type: Comma, Literal: ","}
+		return Token{Type: TypeComma, Literal: ","}
 	case ':':
-		return Token{Type: Collon, Literal: ":"}
+		return Token{Type: TypeCollon, Literal: ":"}
 	case '!':
 		if ch := l.peek(); ch == '=' {
 			l.scan()
@@ -89,7 +89,7 @@ func (l *Lexer) readToken() Token {
 	case '(':
 		return Token{Type: LParen, Literal: "("}
 	case ')':
-		return Token{Type: RParen, Literal: ")"}
+		return Token{Type: TypeRParen, Literal: ")"}
 	case '{':
 		return Token{Type: LBrace, Literal: "{"}
 	case '}':

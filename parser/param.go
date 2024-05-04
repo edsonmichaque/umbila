@@ -1,6 +1,6 @@
 package parser
 
-type ParamDefinition struct {
+type ParamDef struct {
 	Token
 	Var  *Identifier
 	Type *Identifier
