@@ -1,3 +1,5 @@
+@annotation("this is an annotation")
+@annotation(7)
 interface Foo {
   bar(id: int)
   baz(id: int)

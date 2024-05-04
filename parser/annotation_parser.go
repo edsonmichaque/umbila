@@ -1,6 +1,9 @@
 package parser
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+)
 
 type Tokenizer interface {
 	NextToken()
@@ -18,41 +21,52 @@ func (a annotationDefinition) node()       {}
 func (a annotationDefinition) definition() {}
 
 type AnnotationValue struct {
-	String string
-	Number string
-	Bool   string
+	String *string
+	Number *string
+	Bool   *string
 }
 
 func ParseAnnotation(p Tokenizer) (Def, error) {
 	return parseAnnotation(p)
 }
 
-func parseAnnotation(p Tokenizer) (*annotationDefinition, error) {
+func parseAnnotation(tok Tokenizer) (*annotationDefinition, error) {
 	ann := &annotationDefinition{
-		Token: p.CurrentToken(),
+		Token: tok.CurrentToken(),
 	}
 
-	if p.CurrentToken().Type != TypeIdent {
-		return nil, fmt.Errorf("expected <ident> but found: %v", p.CurrentToken())
+	log.Println("Parsing annotation")
+	if err := advanceToken(tok, TypeIdent); err != nil {
+		return nil, err
 	}
-	p.NextToken()
 
-	if p.PeekToken().Type == LParen {
-		p.NextToken()
+	ann.Name = Identifier{
+		Token: tok.CurrentToken(),
+	}
 
-		switch p.PeekToken().Type {
+	if tok.PeekToken().Type == LParen {
+		tok.NextToken()
+
+		switch tok.PeekToken().Type {
 		case String:
-			p.NextToken()
+			tok.NextToken()
 
-			ann.Value.String = p.CurrentToken().Literal
+			ann.Value.String = StringPtr(tok.CurrentToken().Literal)
 		case Number:
-			p.NextToken()
+			tok.NextToken()
 
-			ann.Value.Number = p.CurrentToken().Literal
+			ann.Value.Number = StringPtr(tok.CurrentToken().Literal)
 		default:
-			return nil, fmt.Errorf("expected (<ident>|<number>|<string>) but found: %v", p.PeekToken())
+			return nil, fmt.Errorf("expected (<ident>|<number>|<string>) but found: %v", tok.PeekToken())
 		}
+		tok.NextToken()
 	}
+
+	tok.NextToken()
 
 	return ann, nil
+}
+
+func StringPtr(s string) *string {
+	return &s
 }
