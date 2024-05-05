@@ -5,6 +5,10 @@ import (
 	"log"
 )
 
+func ParseAnnotation(p Tokenizer) (Def, error) {
+	return parseAnnotation(p)
+}
+
 type AnnotationDef struct {
 	Token
 	Name  Identifier
@@ -25,10 +29,6 @@ type AnnotationParam struct {
 	Token
 	Name  string
 	Value string
-}
-
-func ParseAnnotation(p Tokenizer) (Def, error) {
-	return parseAnnotation(p)
 }
 
 func parseAnnotation(tok Tokenizer) (*AnnotationDef, error) {

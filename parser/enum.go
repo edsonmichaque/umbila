@@ -6,12 +6,7 @@ import (
 )
 
 func ParseEnum(tok Tokenizer) (Def, error) {
-	def, err := parseEnumn(tok)
-	if err != nil {
-		return nil, err
-	}
-
-	return def, nil
+	return parseEnumn(tok)
 }
 
 type EnumDef struct {
