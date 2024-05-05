@@ -1,47 +1,72 @@
 package parser
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+)
 
-type EnumDefinition struct {
-	Token
-	Name     *Identifier
-	Variants []*Identifier
+func ParseEnum(tok Tokenizer) (Def, error) {
+	def, err := parseEnumn(tok)
+	if err != nil {
+		return nil, err
+	}
+
+	return def, nil
 }
 
-func (e *EnumDefinition) node() {}
+type EnumDef struct {
+	Token
+	Name   *Identifier
+	Values []*Identifier
+}
 
-func (e *EnumDefinition) definition() {}
+func (e *EnumDef) node() {}
 
-func (p *Parser) parseEnumDefinition() (*EnumDefinition, error) {
-	enumDef := &EnumDefinition{
-		Token: p.curToken,
+func (e *EnumDef) definition() {}
+
+func parseEnumn(tok Tokenizer) (*EnumDef, error) {
+	log.Println("Parsing enum")
+	if tok.CurrentToken().Type != TypeEnum {
+		return nil, fmt.Errorf("expected <enum> but found %v", tok.CurrentToken())
 	}
-	if p.peekToken.Type != TypeIdent {
-		return nil, fmt.Errorf("expected <ident> but found: %v", p.peekToken.Literal)
+
+	def := &EnumDef{
+		Token: tok.CurrentToken(),
 	}
-	p.NextToken()
 
-	enumDef.Name = &Identifier{Token: p.curToken, Value: p.curToken.Literal}
-
-	if p.peekToken.Type != LBrace {
-		return nil, fmt.Errorf("expected <lbrace> but found: %v", p.peekToken.Literal)
+	log.Println("Parsing enum name")
+	if err := advanceToken(tok, TypeIdent); err != nil {
+		return nil, err
 	}
-	p.NextToken()
 
-	for p.peekToken.Type != RBrace {
-		p.NextToken()
+	def.Name = &Identifier{
+		Token: tok.CurrentToken(),
+		Value: tok.CurrentToken().Literal,
+	}
 
-		if p.curToken.Type != TypeIdent {
-			return nil, fmt.Errorf("expected <ident> but found: %v", p.peekToken.Literal)
+	log.Println("Parsing enum <left_brace>")
+	if err := advanceToken(tok, TypeLeftBrace); err != nil {
+		return nil, err
+	}
+
+	log.Println("Parsing enum values")
+	for tok.PeekToken().Type != TypeRightBrace {
+		log.Println("Parsing enum value")
+
+		if err := advanceToken(tok, TypeIdent); err != nil {
+			return nil, err
 		}
 
-		enumDef.Variants = append(
-			enumDef.Variants,
-			&Identifier{Token: p.curToken, Value: p.curToken.Literal},
+		def.Values = append(
+			def.Values,
+			&Identifier{
+				Token: tok.CurrentToken(),
+				Value: tok.CurrentToken().Literal,
+			},
 		)
 	}
-	p.NextToken()
-	p.NextToken()
+	log.Println("Parsing <rigth_brace>")
+	tok.NextToken()
 
-	return enumDef, nil
+	return def, nil
 }

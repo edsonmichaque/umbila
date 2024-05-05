@@ -91,9 +91,9 @@ func (l *Lexer) readToken() Token {
 	case ')':
 		return Token{Type: TypeRParen, Literal: ")"}
 	case '{':
-		return Token{Type: LBrace, Literal: "{"}
+		return Token{Type: TypeLeftBrace, Literal: "{"}
 	case '}':
-		return Token{Type: RBrace, Literal: "}"}
+		return Token{Type: TypeRightBrace, Literal: "}"}
 	case '"':
 		lit := l.readString()
 		return Token{Type: String, Literal: lit}

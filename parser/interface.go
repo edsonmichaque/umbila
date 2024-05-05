@@ -32,11 +32,11 @@ func parseInterface(tok Tokenizer) (*InterfaceDef, error) {
 		return nil, err
 	}
 
-	if err := advanceToken(tok, LBrace); err != nil {
+	if err := advanceToken(tok, TypeLeftBrace); err != nil {
 		return nil, err
 	}
 
-	for tok.PeekToken().Type != RBrace {
+	for tok.PeekToken().Type != TypeRightBrace {
 		log.Println("Parsing operation")
 
 		operationDef, err := parseOperation(tok)

@@ -65,6 +65,7 @@ func (p *Parser) parseDefinition() (Def, error) {
 	parsers := map[TokenType]ParserFunc{
 		TypeInterface: ParseInterface,
 		TypeAt:        ParseAnnotation,
+		TypeEnum:      ParseEnum,
 	}
 
 	parseFunc, ok := parsers[p.CurrentToken().Type]

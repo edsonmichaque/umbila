@@ -11,8 +11,8 @@ const (
 	TypeRParen
 	EOF
 	TypeAt
-	LBrace
-	RBrace
+	TypeLeftBrace
+	TypeRightBrace
 	Number
 	Equal
 	Assign
@@ -27,38 +27,38 @@ const (
 	Struct
 	String
 	TypeComma
-	Enum
+	TypeEnum
 	Union
 	Bool
 )
 
 func (t TokenType) String() string {
 	types := map[TokenType]string{
-		Illegal:       "ILLEGAL",
-		LParen:        "L_PAREN",
-		TypeIdent:     "IDENT",
-		TypeRParen:    "R_PAREN",
-		EOF:           "EOF",
-		TypeAt:        "AT",
-		LBrace:        "L_BRACE",
-		RBrace:        "R_BRACE",
-		Number:        "Number",
-		Equal:         "EQ",
-		Assign:        "ASSIGN",
-		Neq:           "NEQ",
-		GreaterThan:   "GT",
-		LessThan:      "LT",
-		NotEqual:      "NOT_EQUAL",
-		GTEq:          "GTE",
-		Comment:       "COMMENT",
-		TypeCollon:    "COLLON",
-		TypeInterface: "INTERFACE",
-		Struct:        "STRUCT",
-		String:        "STRING",
-		TypeComma:     "COMMA",
-		Enum:          "ENUM",
-		Union:         "UNION",
-		Bool:          "BOOL",
+		Illegal:        "ILLEGAL",
+		LParen:         "L_PAREN",
+		TypeIdent:      "IDENT",
+		TypeRParen:     "R_PAREN",
+		EOF:            "EOF",
+		TypeAt:         "AT",
+		TypeLeftBrace:  "L_BRACE",
+		TypeRightBrace: "R_BRACE",
+		Number:         "Number",
+		Equal:          "EQ",
+		Assign:         "ASSIGN",
+		Neq:            "NEQ",
+		GreaterThan:    "GT",
+		LessThan:       "LT",
+		NotEqual:       "NOT_EQUAL",
+		GTEq:           "GTE",
+		Comment:        "COMMENT",
+		TypeCollon:     "COLLON",
+		TypeInterface:  "INTERFACE",
+		Struct:         "STRUCT",
+		String:         "STRING",
+		TypeComma:      "COMMA",
+		TypeEnum:       "ENUM",
+		Union:          "UNION",
+		Bool:           "BOOL",
 	}
 
 	return types[t]
@@ -78,7 +78,7 @@ type Token struct {
 var keywords = map[string]TokenType{
 	"interface": TypeInterface,
 	"struct":    Struct,
-	"enum":      Enum,
+	"enum":      TypeEnum,
 	"union":     Union,
 	"false":     Bool,
 	"true":      Bool,

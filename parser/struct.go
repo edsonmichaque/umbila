@@ -25,12 +25,12 @@ func (p *Parser) parseStruct() (*StructDefinition, error) {
 		Params: make([]*ParamDef, 0),
 	}
 
-	if p.peekToken.Type != LBrace {
+	if p.peekToken.Type != TypeLeftBrace {
 		return nil, fmt.Errorf("expected '{' but found %v", p.peekToken.Literal)
 	}
 	p.NextToken()
 
-	for p.peekToken.Type != RBrace {
+	for p.peekToken.Type != TypeRightBrace {
 		paramDefinition := &ParamDef{
 			Token: p.curToken,
 		}

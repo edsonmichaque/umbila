@@ -14,14 +14,23 @@ interface Foo {
 @annotation(false) 
 @annotation
 interface Foo {
-  bar(id: int)
-  baz(id: int)
-  foo(id1: int, id2: int, id3: int): Foo
-  acme(id: string): Bar
+  create_foo(name: string, age: int)
+  
+  update_foo(id: int)
+  
+  delete_foo(id1: int, id2: int, id3: int): Foo
+  
+  list_foos(page: int): Bar
+  
+  get_foo(id: string): Bar
 }
 
-@http(method="GET",path="/v1/")
+@http(
+  method = "GET", 
+  path = "/v1/"
+)
 @http(query="id")
+@version("v1")
 interface Foo {
   bar(id: int)
   baz(id: int)
@@ -30,4 +39,9 @@ interface Foo {
   acme(id: string)
 }
 
-
+@serialize("phone_type")
+enum PhoneType {
+    Work
+    Home
+    Personal
+}
