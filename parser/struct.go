@@ -8,23 +8,23 @@ func ParseStruct(tok Tokenizer) (Def, error) {
 	return parseStruct(tok)
 }
 
-type StructDefinition struct {
+type StructDef struct {
 	Token
 	Name   *Identifier
 	Params []*ParamDef
 }
 
-func (s *StructDefinition) node() {}
+func (s *StructDef) node() {}
 
-func (s *StructDefinition) definition() {}
+func (s *StructDef) definition() {}
 
-func parseStruct(p Tokenizer) (*StructDefinition, error) {
+func parseStruct(p Tokenizer) (*StructDef, error) {
 	if p.PeekToken().Type != TypeIdent {
 		return nil, fmt.Errorf("expected <ident> found: %v", p.PeekToken().Literal)
 	}
 	p.NextToken()
 
-	structDef := StructDefinition{
+	structDef := StructDef{
 		Token:  p.CurrentToken(),
 		Params: make([]*ParamDef, 0),
 	}
