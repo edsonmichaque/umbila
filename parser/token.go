@@ -24,7 +24,7 @@ const (
 	Comment
 	TypeCollon
 	TypeInterface
-	Struct
+	TypeStruct
 	String
 	TypeComma
 	TypeEnum
@@ -53,7 +53,7 @@ func (t TokenType) String() string {
 		Comment:        "COMMENT",
 		TypeCollon:     "COLLON",
 		TypeInterface:  "INTERFACE",
-		Struct:         "STRUCT",
+		TypeStruct:     "STRUCT",
 		String:         "STRING",
 		TypeComma:      "COMMA",
 		TypeEnum:       "ENUM",
@@ -77,7 +77,7 @@ type Token struct {
 
 var keywords = map[string]TokenType{
 	"interface": TypeInterface,
-	"struct":    Struct,
+	"struct":    TypeStruct,
 	"enum":      TypeEnum,
 	"union":     Union,
 	"false":     Bool,

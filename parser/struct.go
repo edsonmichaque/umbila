@@ -4,6 +4,10 @@ import (
 	"fmt"
 )
 
+func ParseStruct(tok Tokenizer) (Def, error) {
+	return parseStruct(tok)
+}
+
 type StructDefinition struct {
 	Token
 	Name   *Identifier
@@ -14,50 +18,55 @@ func (s *StructDefinition) node() {}
 
 func (s *StructDefinition) definition() {}
 
-func (p *Parser) parseStruct() (*StructDefinition, error) {
-	if p.peekToken.Type != TypeIdent {
-		return nil, fmt.Errorf("expected <ident> found: %v", p.peekToken.Literal)
+func parseStruct(p Tokenizer) (*StructDefinition, error) {
+	if p.PeekToken().Type != TypeIdent {
+		return nil, fmt.Errorf("expected <ident> found: %v", p.PeekToken().Literal)
 	}
 	p.NextToken()
 
-	structDefinition := StructDefinition{
-		Token:  p.curToken,
+	structDef := StructDefinition{
+		Token:  p.CurrentToken(),
 		Params: make([]*ParamDef, 0),
 	}
 
-	if p.peekToken.Type != TypeLeftBrace {
-		return nil, fmt.Errorf("expected '{' but found %v", p.peekToken.Literal)
+	if p.PeekToken().Type != TypeLeftBrace {
+		return nil, fmt.Errorf("expected '{' but found %v", p.PeekToken().Literal)
 	}
 	p.NextToken()
 
-	for p.peekToken.Type != TypeRightBrace {
-		paramDefinition := &ParamDef{
-			Token: p.curToken,
-		}
-
-		if p.peekToken.Type != TypeIdent {
-			return nil, fmt.Errorf("expected <ident> but found: %v", p.peekToken.Literal)
+	for p.PeekToken().Type != TypeRightBrace {
+		if p.PeekToken().Type != TypeIdent {
+			return nil, fmt.Errorf("expected <ident> but found: %v", p.PeekToken().Literal)
 		}
 		p.NextToken()
 
-		paramDefinition.Var = &Identifier{Token: p.curToken, Value: p.curToken.Literal}
+		paramDef := &ParamDef{
+			Token: p.CurrentToken(),
+		}
+		paramDef.Var = &Identifier{
+			Token: p.CurrentToken(),
+			Value: p.CurrentToken().Literal,
+		}
 
-		if p.peekToken.Type != TypeCollon {
-			return nil, fmt.Errorf("expected <:> but found %v", p.peekToken.Literal)
+		if p.PeekToken().Type != TypeCollon {
+			return nil, fmt.Errorf("expected <:> but found %v", p.PeekToken().Literal)
 		}
 		p.NextToken()
 
-		if p.peekToken.Type != TypeIdent {
-			return nil, fmt.Errorf("expected <ident> but found %v", p.peekToken.Literal)
+		if p.PeekToken().Type != TypeIdent {
+			return nil, fmt.Errorf("expected <ident> but found %v", p.PeekToken().Literal)
 		}
 		p.NextToken()
 
-		paramDefinition.Type = &Identifier{Token: p.curToken, Value: p.curToken.Literal}
+		paramDef.Type = &Identifier{
+			Token: p.CurrentToken(),
+			Value: p.CurrentToken().Literal,
+		}
 
-		structDefinition.Params = append(structDefinition.Params, paramDefinition)
+		structDef.Params = append(structDef.Params, paramDef)
 	}
 	p.NextToken()
 	p.NextToken()
 
-	return &structDefinition, nil
+	return &structDef, nil
 }

@@ -25,13 +25,13 @@ func parseEnumn(tok Tokenizer) (*EnumDef, error) {
 		return nil, fmt.Errorf("expected <enum> but found %v", tok.CurrentToken())
 	}
 
-	def := &EnumDef{
-		Token: tok.CurrentToken(),
-	}
-
 	log.Println("Parsing enum name")
 	if err := advanceToken(tok, TypeIdent); err != nil {
 		return nil, err
+	}
+
+	def := &EnumDef{
+		Token: tok.CurrentToken(),
 	}
 
 	def.Name = &Identifier{
@@ -60,7 +60,8 @@ func parseEnumn(tok Tokenizer) (*EnumDef, error) {
 			},
 		)
 	}
-	log.Println("Parsing <rigth_brace>")
+	log.Println("Parsing <rigth_brace>", tok.CurrentToken())
+	tok.NextToken()
 	tok.NextToken()
 
 	return def, nil

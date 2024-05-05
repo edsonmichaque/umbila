@@ -6,7 +6,7 @@ type OperationDef struct {
 	Name       *Identifier
 	Params     []*ParamDef
 	Return     *ReturnType
-	Annotation *AnnotationDefinition
+	Annotation *AnnotationDef
 }
 
 type ReturnType struct {

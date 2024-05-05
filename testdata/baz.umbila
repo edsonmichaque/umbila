@@ -45,3 +45,8 @@ enum PhoneType {
     Home
     Personal
 }
+
+struct Phone {
+  code: string
+  ext: string
+}
